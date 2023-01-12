@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "arpifis_listings"
+name = "arpifs_listings"
 description = "Processing and comparison of various data from Arpege/IFS listings."
 readme = "README.md"
 requires-python = ">=3.7"
