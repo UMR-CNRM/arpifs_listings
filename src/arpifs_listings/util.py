@@ -199,7 +199,7 @@ def read_listing(source):
         lines = source
     elif isinstance(source, six.string_types):
         with io.open(source, 'r') as listfh:
-            lines = [l.rstrip("\n") for l in listfh]
+            lines = [line.rstrip("\n") for line in listfh]
     return lines
 
 

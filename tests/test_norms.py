@@ -35,7 +35,7 @@ class TestListingNorms(unittest.TestCase):
     @staticmethod
     def _ingest(fname):
         with io.open(_find_testfile(fname), 'r') as fh:
-            return [l.rstrip("\n") for l in fh]
+            return [line.rstrip("\n") for line in fh]
 
     def test_single(self):
         l1_n = norms.NormsSet(self._ingest('listing_screen_li1'))

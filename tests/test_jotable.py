@@ -39,7 +39,7 @@ Jo/n:           1.36 (100.00%)
     def _ingest(fname):
         filename = _find_testfile(fname)
         with io.open(filename, 'r') as fh:
-            return (filename, [l.rstrip("\n") for l in fh])
+            return (filename, [line.rstrip("\n") for line in fh])
 
     def test_single(self):
         l1_j = jo_tables.JoTables(* self._ingest('listing_screen_li1'))
@@ -100,8 +100,11 @@ Jo/n:           1.36 (100.00%)
         l1_jbis = jo_tables.JoTables(_find_testfile('listing_screen_li1'))
         self.assertEqual(l1_j.as_dict(), l1_jbis.as_dict())
         d1 = l1_j.as_dict()
-        self.assertEqual(d1['SCREENING JOB    T1198 NCONF=     1 NSIM4D=     0 NUPTRA=     0']['SYNOP, LAND STATIONS AND SHIPS  ']['SYNOP LAND MANUAL REPORT        ']['U10']['n'], 18464)
-        self.assertEqual(d1['SCREENING JOB    T1198 NCONF=     1 NSIM4D=     0 NUPTRA=     0']['SATOB, ATMOSPHERIC MOTION WINDS ']['METEOSAT    57 METHOD=VIS2      ']['U']['n'], 200)
+        d1_s = d1['SCREENING JOB    T1198 NCONF=     1 NSIM4D=     0 NUPTRA=     0']
+        self.assertEqual(d1_s['SYNOP, LAND STATIONS AND SHIPS  ']['SYNOP LAND MANUAL REPORT        ']['U10']['n'],
+                         18464)
+        self.assertEqual(d1_s['SATOB, ATMOSPHERIC MOTION WINDS ']['METEOSAT    57 METHOD=VIS2      ']['U']['n'],
+                         200)
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ class TestListingCosts(unittest.TestCase):
     def _ingest(fname):
         filename = _find_testfile(fname)
         with io.open(filename, 'r') as fh:
-            return (filename, [l.rstrip("\n") for l in fh])
+            return (filename, [line.rstrip("\n") for line in fh])
 
     def test_single(self):
         l1_j = cost_functions.CostFunctions(* self._ingest('listing_minim_li5'))

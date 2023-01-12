@@ -54,7 +54,7 @@ class OutputListing(object):
 
         # read listing in file
         with io.open(self.filename, 'r') as f:
-            self.lines = [l.rstrip("\n") for l in f]  # to remove trailing '\n'
+            self.lines = [line.rstrip("\n") for line in f]  # to remove trailing '\n'
 
     def __len__(self):
         return len(self.lines)

@@ -162,8 +162,8 @@ class TLTest(object):
                 ids.append((f, g))
         self.ratios_per_id = {i: {} for i in ids}
         for i in ids:
-            for l in lambdas:
-                self.ratios_per_id[i][l] = self.ratios[l][i[0]][i[1]]
+            for la in lambdas:
+                self.ratios_per_id[i][la] = self.ratios[la][i[0]][i[1]]
 
         # b) compute scores
         def score(x):
@@ -172,8 +172,8 @@ class TLTest(object):
             else:
                 s = max(0., -math.log(abs(1. - float(x)), 10))
             return s
-        self.scores_per_id = {i: {l: score(self.ratios_per_id[i][l])
-                                  for l in lambdas}
+        self.scores_per_id = {i: {la: score(self.ratios_per_id[i][l])
+                                  for la in lambdas}
                               for i in ids}
 
         self.best_score_per_id = {i: max(self.scores_per_id[i].values())
@@ -197,7 +197,7 @@ class TLTest(object):
         M = 0
         for i in sorted(self.scores_per_id.keys()):
             x = sorted(self.scores_per_id[i].keys())
-            y = [self.scores_per_id[i][l]for l in x]
+            y = [self.scores_per_id[i][line]for line in x]
             M = int(math.ceil(max(M, max(y))))
             plot_kwargs = {'color': cmap[i[0]]}
             if i in labels:
