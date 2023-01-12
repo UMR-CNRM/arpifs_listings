@@ -2,6 +2,7 @@
 
 [![Custom CI](https://github.com/UMR-CNRM/arpifs_listings/actions/workflows/lint_test_and_doc.yml/badge.svg)](https://github.com/UMR-CNRM/arpifs_listings/actions/workflows/lint_test_and_doc.yml)
 [![Documentation Status](https://readthedocs.org/projects/arpifs_listings/badge/?version=latest)](https://arpifs_listings.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/arpifs-listings.svg)](https://badge.fury.io/py/arpifs-listings)
 
 The *arpifs_listings* package provides a toolbox to process and compare
 various data from Arpege/IFS listings.
