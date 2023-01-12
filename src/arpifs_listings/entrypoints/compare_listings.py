@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,19 +8,13 @@ from __future__ import print_function, absolute_import, unicode_literals, divisi
 
 import argparse
 import io
-import os
-import re
 import sys
-
-# Automatically set the python path
-sitepath = re.sub('{0:}arpifs_listings{0:}bin$'.format(os.path.sep), '',
-                  os.path.dirname(os.path.realpath(__file__)))
-sys.path.insert(0, sitepath)
 
 import arpifs_listings
 
 
-if __name__ == '__main__':
+def main():
+    """Start the CLI."""
 
     parser = argparse.ArgumentParser(description='Tool designed to compare the output listings (norms '
                                                  'or Jo-tables) of an IFS/ARPEGE/ALADIN/AROME experiment.')
