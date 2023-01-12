@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Module that deals any Arpege/IFS listings.
+Module that deal with any Arpege/IFS listing.
 """
 
 from __future__ import print_function, absolute_import, unicode_literals, division
@@ -32,6 +32,11 @@ class OutputListing(object):
         :param filename: name of the file to read in
         :param pattern_type: type of pattern to compare, among
                              ('norms', 'Jo-tables', 'costs', 'AD-test', 'TL-test')
+
+        The :meth:`parse_patterns` needs to be called before accessing the data.
+        Once this necessary step is completed, parsed data can be accessed using
+        the :attr:`normset`, :attr:`jo_tables`, :attr:`costs`, :attr:`AD-test`
+        or :attr:`TL-test` attributes (according to the **pattern_type** value).
         """
         assert pattern_type in ('norms', 'Jo-tables', 'costs', 'AD-test', 'TL-test'), \
             "unknown pattern: " + pattern_type
@@ -160,7 +165,7 @@ class OutputListing(object):
 # FUNCTIONS #
 #############
 def compare(test, ref, **kwargs):
-    """Compare two output listings."""
+    """Compare two :class:`OutputListing` objects."""
     assert test.pattern_type == ref.pattern_type
     result = None
     if test.pattern_type == 'norms':
@@ -180,7 +185,7 @@ def compare_norms(test, ref,
                   out=sys.stdout,
                   onlymaxdiff=False,
                   **_):
-    """Compare two 'norms' pattern-type output listings.
+    """Compare two 'norms' pattern-type :class:`OutputListing` objects.
 
     :param which: either 'all' to compare norms for all steps found in listings,
                   or 'first_and_last_spectral' (default) for the first and last
@@ -221,7 +226,7 @@ def compare_jo_tables(test, ref,
                       onlymaxdiff=False,
                       **_):
     """
-    Compare two 'Jo-tables' pattern-type output listings.
+    Compare two 'Jo-tables' pattern-type :class:`OutputListing` objects.
 
     :param test: Test listing object (to be compared)
     :param ref: Reference listing object (to be compared to)
@@ -254,7 +259,7 @@ def compare_AD_tests(test, ref,
                      out=sys.stdout,
                      **_):
     """
-    Compare two adjoint tests, return the absolute difference of both scores.
+    Compare two adjoint pattern-type :class:`OutputListing` objects.
 
     :param test: Test listing object (to be compared)
     :param ref: Reference listing object (to be compared to)
@@ -262,6 +267,8 @@ def compare_AD_tests(test, ref,
                  - if 'get_worst' get worst of worst (among fields) digits
                    comparison.
     :param out: output open file or stdout
+    :return: The absolute difference of both scores (only if *mode* is
+             'get_worst').
     """
     assert ref.look_for_end()
     assert test.look_for_end()
@@ -294,8 +301,7 @@ def compare_TL_tests(test, ref,
                      out='TL-tests.png',
                      **_):
     """
-    Compare two tangent linear tests, return the absolute difference of both
-    scores.
+    Compare two tangent linear pattern-type :class:`OutputListing` objects.
 
     :param test: Test listing object (to be compared)
     :param ref: Reference listing object (to be compared to)
@@ -304,6 +310,8 @@ def compare_TL_tests(test, ref,
                  - if 'plot', plot a graph of differences
     :param out: (mode=='plot' only) output filename (.png) or None for
                 interactive display
+    :return: The absolute difference of both scores (only if *mode* is
+             'get_worst')..
     """
     assert ref.look_for_end()
     assert test.look_for_end()

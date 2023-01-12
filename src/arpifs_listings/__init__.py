@@ -5,7 +5,6 @@ Processing and comparison of various data from Arpege/IFS listings.
 """
 
 from __future__ import print_function, absolute_import, unicode_literals, division
-import six
 
 import sys
 
@@ -30,18 +29,20 @@ def compare_files(file_test, file_ref,
     :param pattern: the pattern to be compared, among
                     ('norms', 'Jo-tables', 'AD-test', 'TL-test')
 
-    'norms' arguments:
-        :param onlymaxdiff: only max difference is printed for each step.
-        :param which: either 'all' to compare norms for all steps found in listings,
-                      or 'first_and_last_spectral' (default) for the first and last only.
-        :param mode: if 'text', prints the comparison to file;
-                     if 'plot', plots the comparison (pattern='norms');
-                     if 'get_worst', return the worst digits comparison.
+    Optional arguments when *pattern* is 'norms':
 
-    'Jo-tables' arguments:
-        :param nthres: Alert threshold on the ObsCount
-        :param jothres: Alert threshold on the Jo
-        :param bw: Black & White flag
+    :param onlymaxdiff: only max difference is printed for each step.
+    :param which: either 'all' to compare norms for all steps found in listings,
+                  or 'first_and_last_spectral' (default) for the first and last only.
+    :param mode: if 'text', prints the comparison to file;
+                 if 'plot', plots the comparison (pattern='norms');
+                 if 'get_worst', return the worst digits comparison.
+
+    Optional arguments when *pattern* is 'Jo-tables':
+
+    :param nthres: Alert threshold on the ObsCount
+    :param jothres: Alert threshold on the Jo
+    :param bw: Black & White flag
 
     """
     test = listings.OutputListing(file_test, pattern_type=pattern)
