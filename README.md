@@ -1,4 +1,4 @@
-# thenamelisttool
+# arpifs_listings
 
 [![Custom CI](https://github.com/UMR-CNRM/arpifs_listings/actions/workflows/lint_test_and_doc.yml/badge.svg)](https://github.com/UMR-CNRM/arpifs_listings/actions/workflows/lint_test_and_doc.yml)
 [![Documentation Status](https://readthedocs.org/projects/arpifs_listings/badge/?version=latest)](https://arpifs_listings.readthedocs.io/en/latest/?badge=latest)
