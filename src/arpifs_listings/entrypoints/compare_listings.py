@@ -15,7 +15,6 @@ import arpifs_listings
 
 def main():
     """Start the CLI."""
-
     parser = argparse.ArgumentParser(description='Tool designed to compare the output listings (norms '
                                                  'or Jo-tables) of an IFS/ARPEGE/ALADIN/AROME experiment.')
     parser.add_argument('listings',
