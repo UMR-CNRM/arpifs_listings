@@ -7,7 +7,7 @@ data assimilation's cost functions.
 
 from __future__ import print_function, absolute_import, unicode_literals, division
 
-from six import StringIO
+from io import StringIO
 
 import re
 from collections import OrderedDict, namedtuple

@@ -5,7 +5,6 @@ from __future__ import print_function, absolute_import, unicode_literals, divisi
 import io
 import os
 import re
-import six
 import unittest
 
 from arpifs_listings import norms
@@ -89,7 +88,7 @@ class TestListingNorms(unittest.TestCase):
         self.assertIs(ncomp.get_worst(), 0)
         self.assertSetEqual(set(ncomp.sp_comp.values()), set([0, ]))
         self.assertSetEqual(set(ncomp.gp_comp.values()), set([0, ]))
-        str_out = six.StringIO()
+        str_out = io.StringIO()
         ncomp.write(str_out, onlymaxdiff=True)
         str_out.seek(0)
         self.assertEqual(str_out.read(), self.NODIFFS_STR)
@@ -111,7 +110,7 @@ class TestListingNorms(unittest.TestCase):
         self.assertEqual(ncomp.gp_comp['S080TKE'], 14)
         self.assertEqual(ncomp.gp_comp['S087LIQUID_WATER'], 15)
         self.assertEqual(ncomp.gp_comp['SURFIND.VEG.DOMI'], 15)
-        str_out = six.StringIO()
+        str_out = io.StringIO()
         ncomp.write(str_out, onlymaxdiff=True)
         str_out.seek(0)
         self.assertEqual(str_out.read(), self.GPDIFFS_STR)
