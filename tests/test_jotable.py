@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import print_function, absolute_import, unicode_literals, division
-
 import io
 import os
 import unittest
@@ -37,7 +33,7 @@ Jo/n:           1.36 (100.00%)
     @staticmethod
     def _ingest(fname):
         filename = _find_testfile(fname)
-        with io.open(filename, 'r') as fh:
+        with open(filename) as fh:
             return (filename, [line.rstrip("\n") for line in fh])
 
     def test_single(self):
