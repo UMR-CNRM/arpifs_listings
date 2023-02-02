@@ -1,12 +1,7 @@
-# -*- coding: utf-8 -*-
-
 """
 Various utility functions used when parsinf ArpIFS listings.
 """
 
-from __future__ import print_function, absolute_import, unicode_literals, division
-
-import io
 import re
 
 #: No automatic export
@@ -197,7 +192,7 @@ def read_listing(source):
     if isinstance(source, list):
         lines = source
     elif isinstance(source, str):
-        with io.open(source, 'r') as listfh:
+        with open(source) as listfh:
             lines = [line.rstrip("\n") for line in listfh]
     return lines
 
