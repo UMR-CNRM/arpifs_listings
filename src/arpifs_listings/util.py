@@ -8,7 +8,6 @@ from __future__ import print_function, absolute_import, unicode_literals, divisi
 
 import io
 import re
-import six
 
 #: No automatic export
 __all__ = []
@@ -167,7 +166,7 @@ def get_maxint(container, infinity=-999):
     for d in container:
         if isinstance(d, int):
             digit = max(digit, d)
-        elif isinstance(d, six.string_types):
+        elif isinstance(d, str):
             digit = d
             break
         elif d is None:
@@ -197,7 +196,7 @@ def read_listing(source):
     """
     if isinstance(source, list):
         lines = source
-    elif isinstance(source, six.string_types):
+    elif isinstance(source, str):
         with io.open(source, 'r') as listfh:
             lines = [line.rstrip("\n") for line in listfh]
     return lines
