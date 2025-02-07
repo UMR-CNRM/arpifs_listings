@@ -31,6 +31,9 @@ repository = "https://github.com/UMR-CNRM/arpifs_listings"
 docs = [
     "sphinx",
 ]
+graphics = [
+    "matplotlib",
+]
 
 [tool.setuptools_scm]
 tag_regex = '^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$'
