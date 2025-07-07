@@ -442,6 +442,7 @@ def compare_normsets(test, ref, mode,
                  - if 'get_worst' get worst of worst (among fields) digits
                    comparison.
                  - if 'plot', plot a graph of differences
+                 - if 'sp_dict', return a dict(step:dict(field:comparison)) for spectral fields
     :param plot_out: if mode == 'plot', name of the plot output file
     """
     if not test.steps_equal(ref):
@@ -473,7 +474,7 @@ def compare_normsets(test, ref, mode,
 
     if 'get_worst' in mode:
         worstdigits = []
-    elif mode == 'plot':
+    elif mode in ('plot', 'sp_dict'):
         normsout = collections.OrderedDict()
     for i in steps:
         norm_comp = NormsComparison(test[i],
@@ -489,7 +490,7 @@ def compare_normsets(test, ref, mode,
         elif 'get_worst' in mode:
             assert onlymaxdiff is True
             worstdigits.append(norm_comp.get_worst('both'))
-        elif mode == 'plot':
+        elif mode in ('plot', 'sp_dict'):
             norm_comp = NormsComparison(test.norms_at_each_step[i],
                                         ref.norms_at_each_step[i],
                                         only='spectral')
@@ -540,6 +541,8 @@ def compare_normsets(test, ref, mode,
         return get_worst(worstdigits)
     elif mode == 'get_worst_by_step':
         return worstdigits
+    elif mode == 'sp_dict':
+        return normsout
     else:
         return None
 
