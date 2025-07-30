@@ -422,28 +422,10 @@ class NormsComparison:
 ###################
 # INNER FUNCTIONS #############################################################
 ###################
-def compare_normsets(test, ref, mode,
-                     which='first_and_last_spectral',
-                     out=sys.stdout,
-                     onlymaxdiff=False,
-                     hide_equal_norms=False,
-                     plot_out='norms_diff.png'):
+def common_steps(test, ref,
+                 which='first_and_last_spectral'):
     """
-    Compare 2 Normset objects.
-
-    :param which: either 'all' to compare norms for all steps found in listings,
-                  or 'first_and_last_spectral' (default) for the first and last
-                  spectral norms only.
-    :param out: output open file or stdout
-    :param onlymaxdiff: only max difference is printed for each step.
-    :param mode: - if 'text', prints the comparison to file;
-                 - if 'get_worst_by_step', get worst (among fields) digits
-                   comparison for each step;
-                 - if 'get_worst' get worst of worst (among fields) digits
-                   comparison.
-                 - if 'plot', plot a graph of differences
-                 - if 'sp_dict', return a dict(step:dict(field:comparison)) for spectral fields
-    :param plot_out: if mode == 'plot', name of the plot output file
+    Trim test and ref with only common steps of norms, and return the list of these.
     """
     if not test.steps_equal(ref):
         st = {n.format_step() for n in test}
@@ -471,10 +453,84 @@ def compare_normsets(test, ref, mode,
             steps = (steps[0],)
     elif which == 'all':
         steps = list(range(len(test)))
+    return steps
 
+
+def compare_normsets_as_table(test, ref,
+                              hide_equal_norms=False):
+    """
+    Compare 2 Normset objects as a table.
+    """
+    steps = common_steps(test, ref, which='all')
+    sp = collections.OrderedDict()
+    gp = collections.OrderedDict()
+    for i in steps:
+        sp_comp = NormsComparison(test.norms_at_each_step[i],
+                                  ref.norms_at_each_step[i],
+                                  only='spectral',
+                                  hide_equal_norms=False).sp_comp
+        gp_comp = NormsComparison(test.norms_at_each_step[i],
+                                  ref.norms_at_each_step[i],
+                                  only='gridpoint',
+                                  hide_equal_norms=hide_equal_norms).gp_comp
+        if len(sp_comp) > 0:
+            sp[i] = sp_comp
+        if len(gp_comp) > 0:
+            gp[i] = gp_comp
+    # set of fields
+    spfields = set()
+    for step in sp.keys():
+        spfields.update(sp[step].keys())
+    gpfields = set()
+    for step in gp.keys():
+        gpfields.update(gp[step].keys())
+    # set of steps
+    spsteps = list(sp.keys())
+    gpsteps = list(gp.keys())
+    # reorganize table
+    table = {'sp':{'steps':list([test[step].format_step() for step in spsteps]), 'fields':{field:[] for field in spfields}},
+             'gp':{'steps':list([test[step].format_step() for step in gpsteps]), 'fields':{field:[] for field in gpfields}}}
+    # 1. spectral
+    for i, step in enumerate(spsteps):
+        for field in spfields:
+            if field in sp[step]:
+                # (index of step in list of steps, value)
+                table['sp']['fields'][field].append((i, sp[step][field]))
+    # 2. gridpoint
+    for i, step in enumerate(gpsteps):
+        for field in gpfields:
+            if field in gp[step]:
+                # (index of step in list of steps, value)
+                table['gp']['fields'][field].append((i, gp[step][field]))
+    return table
+
+
+def compare_normsets(test, ref, mode,
+                     which='first_and_last_spectral',
+                     out=sys.stdout,
+                     onlymaxdiff=False,
+                     hide_equal_norms=False,
+                     plot_out='norms_diff.png'):
+    """
+    Compare 2 Normset objects.
+
+    :param which: either 'all' to compare norms for all steps found in listings,
+                  or 'first_and_last_spectral' (default) for the first and last
+                  spectral norms only.
+    :param out: output open file or stdout
+    :param onlymaxdiff: only max difference is printed for each step.
+    :param mode: - if 'text', prints the comparison to file;
+                 - if 'get_worst_by_step', get worst (among fields) digits
+                   comparison for each step;
+                 - if 'get_worst' get worst of worst (among fields) digits
+                   comparison.
+                 - if 'plot', plot a graph of differences
+    :param plot_out: if mode == 'plot', name of the plot output file
+    """
+    steps = common_steps(test, ref, which=which)
     if 'get_worst' in mode:
         worstdigits = []
-    elif mode in ('plot', 'sp_dict'):
+    elif mode == 'plot':
         normsout = collections.OrderedDict()
     for i in steps:
         norm_comp = NormsComparison(test[i],
@@ -490,12 +546,13 @@ def compare_normsets(test, ref, mode,
         elif 'get_worst' in mode:
             assert onlymaxdiff is True
             worstdigits.append(norm_comp.get_worst('both'))
-        elif mode in ('plot', 'sp_dict'):
+        elif mode == 'plot':
             norm_comp = NormsComparison(test.norms_at_each_step[i],
                                         ref.norms_at_each_step[i],
                                         only='spectral')
             if len(norm_comp.sp_comp) > 0:
                 normsout[test[i].format_step()] = norm_comp.sp_comp
+
     if mode == 'plot':
         import matplotlib.pyplot as plt
         fldset = []
@@ -541,8 +598,6 @@ def compare_normsets(test, ref, mode,
         return get_worst(worstdigits)
     elif mode == 'get_worst_by_step':
         return worstdigits
-    elif mode == 'sp_dict':
-        return normsout
     else:
         return None
 
